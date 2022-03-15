@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */; };
+		596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */; };
+		59AC921127DAD844006B0A93 /* TransitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AC921027DAD844006B0A93 /* TransitionsView.swift */; };
 		59C16C732728C05600DF2A3A /* SwiftUIPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */; };
 		59C16C752728C05600DF2A3A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C16C742728C05600DF2A3A /* ContentView.swift */; };
 		59C16C772728C05800DF2A3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C16C762728C05800DF2A3A /* Assets.xcassets */; };
@@ -14,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutRevisitedView.swift; sourceTree = "<group>"; };
+		596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryEffectView.swift; sourceTree = "<group>"; };
+		59AC921027DAD844006B0A93 /* TransitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionsView.swift; sourceTree = "<group>"; };
 		59C16C6F2728C05600DF2A3A /* SwiftUIPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlaygroundApp.swift; sourceTree = "<group>"; };
 		59C16C742728C05600DF2A3A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +59,9 @@
 			children = (
 				59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */,
 				59C16C742728C05600DF2A3A /* ContentView.swift */,
+				596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */,
+				59AC921027DAD844006B0A93 /* TransitionsView.swift */,
+				5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */,
 				59C16C762728C05800DF2A3A /* Assets.xcassets */,
 				59C16C782728C05800DF2A3A /* Preview Content */,
 			);
@@ -138,6 +147,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				59C16C752728C05600DF2A3A /* ContentView.swift in Sources */,
+				59AC921127DAD844006B0A93 /* TransitionsView.swift in Sources */,
+				596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */,
+				5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */,
 				59C16C732728C05600DF2A3A /* SwiftUIPlaygroundApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

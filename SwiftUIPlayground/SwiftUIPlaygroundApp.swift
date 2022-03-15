@@ -11,7 +11,22 @@ import SwiftUI
 struct SwiftUIPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FlowLayoutRevisitedView(
+                items: [
+                    Item(
+                        id: UUID(),
+                        text: "Once Upon a time"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Nowhere to go"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lala"
+                    )
+                ].shuffled()
+            )
         }
     }
 }
