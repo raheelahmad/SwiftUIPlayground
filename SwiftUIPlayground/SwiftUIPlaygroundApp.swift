@@ -15,17 +15,125 @@ struct SwiftUIPlaygroundApp: App {
                 items: [
                     Item(
                         id: UUID(),
-                        text: "Once Upon a time"
-                    ),
-                    Item(
-                        id: UUID(),
                         text: "Nowhere to go"
                     ),
                     Item(
                         id: UUID(),
                         text: "Lala"
-                    )
-                ].shuffled()
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Once Upon a time in a land very far away there lived a man!"
+//                        text: "Once Upon a time"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Once Upon a time in a land very far away there lived a man!"
+//                        text: "Once Upon a time"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Once Upon a time in a land very far away there lived a man!"
+//                        text: "Once Upon a time"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Once Upon a time in a land very far away there lived a man!"
+//                        text: "Once Upon a time"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Monse1q"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Terminus"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Massive"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Lassoto"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Pakelate"
+                    ),
+                    Item(
+                        id: UUID(),
+                        text: "Starrett"
+                    ),
+                ]
             )
         }
     }
