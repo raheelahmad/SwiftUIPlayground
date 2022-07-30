@@ -11,6 +11,7 @@
 		5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */; };
 		596C29F5282A091F002648CA /* FlipAndSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596C29F4282A091F002648CA /* FlipAndSlideView.swift */; };
 		596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */; };
+		597450B128677AE4001C6B23 /* LayoutProtocolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597450B028677AE4001C6B23 /* LayoutProtocolView.swift */; };
 		597A2C22281125CF008ED2AF /* AdvancedAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597A2C21281125CF008ED2AF /* AdvancedAlignmentView.swift */; };
 		59AC921127DAD844006B0A93 /* TransitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AC921027DAD844006B0A93 /* TransitionsView.swift */; };
 		59C16C732728C05600DF2A3A /* SwiftUIPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */; };
@@ -18,6 +19,9 @@
 		59C16C772728C05800DF2A3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C16C762728C05800DF2A3A /* Assets.xcassets */; };
 		59C16C7A2728C05800DF2A3A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C16C792728C05800DF2A3A /* Preview Assets.xcassets */; };
 		59CAC7E92805F9FD008739ED /* FixedSizeBuiltIns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59CAC7E82805F9FD008739ED /* FixedSizeBuiltIns.swift */; };
+		59E9608A286A17CB00B93954 /* SwiftUILabTransitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E96089286A17CB00B93954 /* SwiftUILabTransitionsView.swift */; };
+		59EB718F286E783400D343BC /* SwiftUILabHeroTransitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59EB718E286E783400D343BC /* SwiftUILabHeroTransitionView.swift */; };
+		59F3CA96288DB42A00C1C97A /* ClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F3CA95288DB42A00C1C97A /* ClothView.swift */; };
 		59F442F427E1C52E0087FD22 /* MapViewReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F442F327E1C52E0087FD22 /* MapViewReaderView.swift */; };
 		59F442F627E1C8060087FD22 /* GesturesAnimations1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F442F527E1C8060087FD22 /* GesturesAnimations1.swift */; };
 /* End PBXBuildFile section */
@@ -27,6 +31,7 @@
 		5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutRevisitedView.swift; sourceTree = "<group>"; };
 		596C29F4282A091F002648CA /* FlipAndSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipAndSlideView.swift; sourceTree = "<group>"; };
 		596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryEffectView.swift; sourceTree = "<group>"; };
+		597450B028677AE4001C6B23 /* LayoutProtocolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutProtocolView.swift; sourceTree = "<group>"; };
 		597A2C21281125CF008ED2AF /* AdvancedAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAlignmentView.swift; sourceTree = "<group>"; };
 		59AC921027DAD844006B0A93 /* TransitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionsView.swift; sourceTree = "<group>"; };
 		59C16C6F2728C05600DF2A3A /* SwiftUIPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,6 +40,9 @@
 		59C16C762728C05800DF2A3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		59C16C792728C05800DF2A3A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		59CAC7E82805F9FD008739ED /* FixedSizeBuiltIns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedSizeBuiltIns.swift; sourceTree = "<group>"; };
+		59E96089286A17CB00B93954 /* SwiftUILabTransitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUILabTransitionsView.swift; sourceTree = "<group>"; };
+		59EB718E286E783400D343BC /* SwiftUILabHeroTransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUILabHeroTransitionView.swift; sourceTree = "<group>"; };
+		59F3CA95288DB42A00C1C97A /* ClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothView.swift; sourceTree = "<group>"; };
 		59F442F327E1C52E0087FD22 /* MapViewReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewReaderView.swift; sourceTree = "<group>"; };
 		59F442F527E1C8060087FD22 /* GesturesAnimations1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GesturesAnimations1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */,
+				597450B028677AE4001C6B23 /* LayoutProtocolView.swift */,
+				59E96089286A17CB00B93954 /* SwiftUILabTransitionsView.swift */,
+				59EB718E286E783400D343BC /* SwiftUILabHeroTransitionView.swift */,
 				59F442F327E1C52E0087FD22 /* MapViewReaderView.swift */,
 				59F442F527E1C8060087FD22 /* GesturesAnimations1.swift */,
 				5905F21627FA36D700BFEEA2 /* TwoWayToggle.swift */,
@@ -82,6 +93,7 @@
 				5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */,
 				59C16C762728C05800DF2A3A /* Assets.xcassets */,
 				59C16C782728C05800DF2A3A /* Preview Content */,
+				59F3CA95288DB42A00C1C97A /* ClothView.swift */,
 			);
 			path = SwiftUIPlayground;
 			sourceTree = "<group>";
@@ -165,11 +177,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				59C16C752728C05600DF2A3A /* ContentView.swift in Sources */,
+				59F3CA96288DB42A00C1C97A /* ClothView.swift in Sources */,
 				59AC921127DAD844006B0A93 /* TransitionsView.swift in Sources */,
 				59CAC7E92805F9FD008739ED /* FixedSizeBuiltIns.swift in Sources */,
 				5905F21727FA36D700BFEEA2 /* TwoWayToggle.swift in Sources */,
+				59E9608A286A17CB00B93954 /* SwiftUILabTransitionsView.swift in Sources */,
+				59EB718F286E783400D343BC /* SwiftUILabHeroTransitionView.swift in Sources */,
 				597A2C22281125CF008ED2AF /* AdvancedAlignmentView.swift in Sources */,
 				596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */,
+				597450B128677AE4001C6B23 /* LayoutProtocolView.swift in Sources */,
 				59F442F427E1C52E0087FD22 /* MapViewReaderView.swift in Sources */,
 				59F442F627E1C8060087FD22 /* GesturesAnimations1.swift in Sources */,
 				5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */,
@@ -313,6 +329,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -342,6 +359,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

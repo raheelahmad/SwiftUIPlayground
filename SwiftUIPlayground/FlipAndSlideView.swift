@@ -8,14 +8,14 @@
 import SwiftUI
 
 public struct FlipModifier: ViewModifier {
-    public var effect: Double
+    public var angle: Double
 
-    public init(effect: Double) {
-        self.effect = effect
+    public init(angle: Double) {
+        self.angle = angle
     }
 
     public func body(content: Content) -> some View {
-        content.rotation3DEffect(.degrees(effect), axis: (0, 1, 0))
+        content.rotation3DEffect(.degrees(angle), axis: (0, 1, 0))
     }
 }
 
@@ -31,8 +31,8 @@ public struct SlideDownModifier: ViewModifier {
 public extension AnyTransition {
     static func flip(direction: Double) -> AnyTransition {
         AnyTransition.modifier(
-            active: FlipModifier(effect: direction * 180),
-            identity: FlipModifier(effect: 0)
+            active: FlipModifier(angle: direction * 180),
+            identity: FlipModifier(angle: 0)
         )
     }
 
@@ -48,6 +48,15 @@ struct Card: Identifiable {
     enum Side: String {
         var id: String {
             rawValue
+        }
+
+        var other: Self {
+            switch self {
+            case .front:
+                return .back
+            case .back:
+                return .front
+            }
         }
 
         var text: String {
@@ -98,7 +107,7 @@ struct CardView: View {
     let card: Card
     let side: Card.Side
 
-    var body: some View {
+    func sideView(side: Card.Side) -> some View {
         ZStack {
             VStack(alignment: .leading) {
                 HStack {
@@ -124,11 +133,22 @@ struct CardView: View {
                 .fill(side.background)
         )
     }
+
+    var body: some View {
+        sideView(side: side)
+//                .rotation3DEffect(.degrees(side == .front ? 0 : 180), axis: (0, 1, 0))
+//                .opacity(side == .front ? 1 : 0)
+//            sideView(side: .back)
+//                .rotation3DEffect(.degrees(side == .back ? 0 : -180), axis: (0, 1, 0))
+//                .opacity(side == .back ? 1 : 0)
+//        }
+    }
 }
 
 struct Navigation: View {
     @Binding var index: Int
     @Binding var side: Card.Side
+    @Binding var forward: Bool
     let count: Int
 
     var animation: Animation {
@@ -140,6 +160,7 @@ struct Navigation: View {
             Button {
                 withAnimation(animation) {
                     if index > 0 {
+                        forward = false
                         index -= 1
                         side = .front
                     }
@@ -155,6 +176,7 @@ struct Navigation: View {
             Button {
                 withAnimation(animation) {
                     if index < count - 1 {
+                        forward = true
                         index += 1
                         side = .front
                     }
@@ -172,27 +194,29 @@ struct FlipAndSlideView: View {
     let cards: [Card]
     @State var side: Card.Side = .front
     @State private var index = 0
+    @State var forward = true
 
     var card: Card {
         cards[index]
     }
 
-    var transition: AnyTransition {
+    var fullTransition: AnyTransition {
         if side == .front {
-            // insertion: moving in the next card
-            // removal: flipping front to back
             return .asymmetric(
-                insertion: .move(edge: .trailing),
-                removal: .flip(direction: -1).combined(with: .opacity)
+                insertion: .move(edge: forward ? .trailing : .leading),
+                removal: .flip(direction: 1).combined(with: .opacity)
             )
         } else {
-            // insertion: flipping back to front
-            // removal: removing the current card
             return .asymmetric(
-                insertion: .flip(direction: 1).combined(with: .opacity),
-                removal: .move(edge: .leading)
+                insertion: .flip(direction: -1).combined(with: .opacity),
+                removal: .move(edge: .trailing)
             )
         }
+    }
+
+    var transition: AnyTransition {
+        .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading))
+//        .move(edge: .leading)
     }
 
     var animation: Animation {
@@ -223,12 +247,11 @@ struct FlipAndSlideView: View {
                     }
                 }
                 .padding()
-                .zIndex(1)
-                .transition(transition)
+                .transition(fullTransition)
 
             VStack {
                 if side == .back {
-                    Navigation(index: $index, side: $side, count: cards.count)
+                    Navigation(index: $index, side: $side, forward: $forward, count: cards.count)
                 }
             }.frame(height: 64)
         }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 enum Example: String, Identifiable, CaseIterable {
+    case clothAnimation
+    case swiftUILabTransitions
     case slideFlip
     case geometryEffectView
     case transitionsView
@@ -21,6 +23,10 @@ enum Example: String, Identifiable, CaseIterable {
 
     var title: String {
         switch self {
+            case .clothAnimation:
+                return "Cloth Animation"
+            case .swiftUILabTransitions:
+                return "SwiftUILab Transitions"
             case .slideFlip:
                 return "Slide and Flip"
             case .geometryEffectView:
@@ -44,20 +50,24 @@ enum Example: String, Identifiable, CaseIterable {
 extension Example: View {
     var body: some View {
         switch self {
+            case .clothAnimation:
+                ClothView()
+            case .swiftUILabTransitions:
+                SwiftUILabTransitionsView()
             case .slideFlip:
                 FlipAndSlideView(cards: sampleCards)
             case .geometryEffectView:
-            GeometryEffectView()
-        case .transitionsView:
-            TransitionsView()
+                GeometryEffectView()
+            case .transitionsView:
+                TransitionsView()
             case .maginificationEffect:
                 GesturesAnimations1()
             case .flowLayoutRevisited:
-            FlowLayoutRevisitedView(
-                items: (
-                    (1 ..< Int.random(in: 4 ..< 20)).map { _ in
-                        Item(id: UUID(), text: "Once Upon a time in a land very far away there lived a man!")
-                    }
+                FlowLayoutRevisitedView(
+                    items: (
+                        (1 ..< Int.random(in: 4 ..< 20)).map { _ in
+                            Item(id: UUID(), text: "Once Upon a time in a land very far away there lived a man!")
+                        }
                         +
                         (1 ..< Int.random(in: 5 ..< 20)).map { _ in
                             Item(id: UUID(), text: "Lasseter")
@@ -66,8 +76,8 @@ extension Example: View {
                         (1 ..< Int.random(in: 4 ..< 20)).map { _ in
                             Item(id: UUID(), text: "Mt. Gorakh")
                         }
-                ).shuffled()
-            )
+                    ).shuffled()
+                )
             case .mapViewReader:
                 MapViewReaderView()
             case .twoWayToggle:
@@ -82,7 +92,13 @@ extension Example: View {
 struct SwiftUIPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
-            FlipAndSlideView(cards: sampleCards)
+            NavigationView {
+                List(Example.allCases) { example in
+                    NavigationLink(example.title) {
+                        example
+                    }
+                }
+            }
         }
     }
 }
