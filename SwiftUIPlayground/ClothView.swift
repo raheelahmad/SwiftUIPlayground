@@ -62,9 +62,9 @@ struct ClothView: View {
     private func newCalculateFrames() {
         let rectSide = side - itemSpacing
         var rects: [(CGRect, Double)] = []
-        let minOpacity = 0.75
+        let minOpacity = 0.25
         let maxOpacity = 0.95
-        let maxDistance = 3 * rectSide
+        let maxDistance = 6 * rectSide
         for row in 0..<rows {
             for col in 0..<cols {
                 let x = Double(col) * side + itemSpacing/2
@@ -72,22 +72,32 @@ struct ClothView: View {
 
                 let rectCenter = CGPoint(x: x + rectSide/2, y: y + rectSide/2)
                 let sizeScale: Double
+                let move: CGPoint
                 let opacity: Opacity
                 if let tapped {
 
                     let dist = self.distance(rectCenter, tapped)
+                    let xDist: Double = (tapped.x - rectCenter.x)
+                    let yDist: Double = (tapped.y - rectCenter.y)
+//                    let xSign: Double = xDist > 0 ? 1 : -1
+//                    let ySign: Double = yDist > 0 ? 1 : -1
 
                     let scale = dist.lerp(0, maxDistance, 0, 1)
 
-                    sizeScale = scale.lerp(0, 1, 0.4, 1)
-                    opacity = scale.lerp(0, 1, maxOpacity, minOpacity)
+                    sizeScale = scale.lerp(0, 1, 0.3, 1)
+                    opacity = scale.lerp(0, 1, minOpacity, maxOpacity)
+
+                    move = .init(
+                        x: (1 - scale) * abs(xDist).lerp(0, 20, 0, rectSide/2),
+                        y: (1 - scale) * abs(yDist).lerp(0, 20, 0, rectSide/2)
+                    )
                 } else {
                     sizeScale = 1
-                    opacity = minOpacity
+                    opacity = maxOpacity
+                    move = .zero
                 }
 
-
-                let rect = CGRect(x: x, y: y, width: rectSide * sizeScale, height: rectSide * sizeScale)
+                let rect = CGRect(x: x + move.x, y: y + move.y, width: rectSide * sizeScale, height: rectSide * sizeScale)
                 rects.append((rect, opacity))
             }
         }
@@ -126,11 +136,11 @@ struct ClothView: View {
     }
 
     private var grid: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             ForEach(0..<rows, id: \.self) { row in
                 ForEach(0..<cols, id: \.self) { col in
                     RoundedRectangle(cornerRadius: 3, style: .continuous)
-                        .fill(Color.red)
+                        .fill(.red)
                         .frame(width: rect(row, col).width, height: rect(row, col).height)
                         .offset(x: rect(row, col).origin.x, y: rect(row, col).origin.y)
                         .opacity(mod(row, col)?.1 ?? 0)
@@ -140,7 +150,7 @@ struct ClothView: View {
         .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
         .gesture(
             DragGesture(minimumDistance: 0)
-               .onChanged { value in
+                .onChanged { value in
                     guard kind == .touchCloth else { return }
                     let loc = value.location
                     withAnimation {
