@@ -148,41 +148,36 @@ struct ClothView: View {
             }
         }
         .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
-        .gesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { value in
-                    guard kind == .touchCloth else { return }
-                    let loc = value.location
-                    withAnimation {
-                        self.tapped = loc
-                    }
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onChanged { value in
+                guard kind == .touchCloth else { return }
+                let loc = value.location
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    self.tapped = loc
                 }
-                .onEnded { _ in
-                    guard kind == .touchCloth else { return }
-                    withAnimation(.easeIn(duration: 0.5)) {
-                        self.tapped = nil
-                    }
+            }
+            .onEnded { _ in
+                guard kind == .touchCloth else { return }
+                withAnimation(.easeIn(duration: 0.8)) {
+                    self.tapped = nil
                 }
-        )
+            }
     }
 
     var body: some View {
-        Color.clear
-            .overlay(grid)
+        LinearGradient(colors: [.yellow, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
+            .mask(grid)
+            .gesture(dragGesture)
             .background(
                 GeometryReader { reader in
                     Color.clear
                         .preference(key: SizeKey.self, value: [.init(id: UUID(), size: reader.size)])
                 }
             )
-//            .onAppear {
-//                let l10 = (21.0).lerp(1, 100, 0, 1)
-//                let l11 = (21.0).lerp(1, 100, 1, 0)
-//                let l2 = (-12).lerp(-20, -1, 0, 1)
-//                print("LERP for 21.0 between 1 → 100: \(l10)")
-//                print("LERP for 21.0 between 1 → 100 reversed: \(l11)")
-//                print("LERP for -12.0 between -20 → -1: \(l2)")
-//            }
             .onPreferenceChange(SizeKey.self) {
                 self.totalSize = $0.first!.size
             }
