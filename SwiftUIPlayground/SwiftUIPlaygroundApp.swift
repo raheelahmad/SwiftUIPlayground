@@ -92,13 +92,14 @@ extension Example: View {
 struct SwiftUIPlaygroundApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                List(Example.allCases) { example in
-                    NavigationLink(example.title) {
-                        example
-                    }
-                }
-            }
+            ClothView()
+            //            NavigationView {
+//                List(Example.allCases) { example in
+//                    NavigationLink(example.title) {
+//                        example
+//                    }
+//                }
+//            }
         }
     }
 }
