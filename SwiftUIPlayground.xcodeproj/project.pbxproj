@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5905F21727FA36D700BFEEA2 /* TwoWayToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5905F21627FA36D700BFEEA2 /* TwoWayToggle.swift */; };
+		59089C1C28A1B954003A91B1 /* ParamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59089C1B28A1B954003A91B1 /* ParamsView.swift */; };
 		5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */; };
 		596C29F5282A091F002648CA /* FlipAndSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596C29F4282A091F002648CA /* FlipAndSlideView.swift */; };
 		596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		5905F21627FA36D700BFEEA2 /* TwoWayToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoWayToggle.swift; sourceTree = "<group>"; };
+		59089C1B28A1B954003A91B1 /* ParamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamsView.swift; sourceTree = "<group>"; };
 		5950F19127DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutRevisitedView.swift; sourceTree = "<group>"; };
 		596C29F4282A091F002648CA /* FlipAndSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipAndSlideView.swift; sourceTree = "<group>"; };
 		596DE08C27D71FB80037C0EC /* GeometryEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryEffectView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				59C16C762728C05800DF2A3A /* Assets.xcassets */,
 				59C16C782728C05800DF2A3A /* Preview Content */,
 				59F3CA95288DB42A00C1C97A /* ClothView.swift */,
+				59089C1B28A1B954003A91B1 /* ParamsView.swift */,
 			);
 			path = SwiftUIPlayground;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				597A2C22281125CF008ED2AF /* AdvancedAlignmentView.swift in Sources */,
 				596DE08D27D71FB80037C0EC /* GeometryEffectView.swift in Sources */,
 				597450B128677AE4001C6B23 /* LayoutProtocolView.swift in Sources */,
+				59089C1C28A1B954003A91B1 /* ParamsView.swift in Sources */,
 				59F442F427E1C52E0087FD22 /* MapViewReaderView.swift in Sources */,
 				59F442F627E1C8060087FD22 /* GesturesAnimations1.swift in Sources */,
 				5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */,

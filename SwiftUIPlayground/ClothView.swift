@@ -237,14 +237,6 @@ struct ClothView: View {
             }
     }
 
-    @State private var showingAnimDown = false
-    @State private var showingAnimUp = false
-    @State private var showingRows = false
-    @State private var showingCols = false
-    @State private var showingElementsAffected = false
-    @State private var showingCellSide = false
-    @State private var showingCellSpacing = false
-
     @State private var showingSaveParamsAlert = false
     @State private var showingLoadParams = false
     @State private var saveParamsName: String = ""
@@ -292,114 +284,49 @@ struct ClothView: View {
         }
     }
 
-    private var tweaksView: some View {
+    private var saveLoad: some View {
         ZStack {
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    Button {
-                        withAnimation { showingAnimDown = true }
-                    } label: {
-                        Text("anim down \(nf.string(from: .init(value: animDown))!)")
-                    }
+                    HStack {
+                        Button {
+                            showingSaveParamsAlert = true
+                        } label: {
+                            Text("Save")
+                        }
 
-                    Button {
-                        withAnimation { showingAnimUp = true }
-                    } label: {
-                        Text("anim up \(nf.string(from: .init(value: animUp))!)")
+                        Divider()
+                            .frame(height: 12)
+
+                        Button {
+                            showingLoadParams = true
+                        } label: {
+                            Text("Load")
+                        }
                     }
+                }.font(.caption2)
+
+                if showingSaveParamsAlert {
+                    ClosableContainer(content: saveSheet, showing: $showingSaveParamsAlert)
                 }
-
-                HStack(spacing: 20) {
-                    Button {
-                        withAnimation { showingRows = true }
-                    } label: {
-                        Text("Rows \(nf.string(from: .init(value: rows))!)")
-                    }
-                    Button {
-                        withAnimation { showingCols = true }
-                    } label: {
-                        Text("Cols \(nf.string(from: .init(value: cols))!)")
-                    }
-                }
-
-                HStack(spacing: 20) {
-                    Button {
-                        withAnimation { showingCellSide = true }
-                    } label: {
-                        Text("Cell Side \(nf.string(from: .init(value: side))!)")
-                    }
-                    Button {
-                        withAnimation { showingCellSpacing = true }
-                    } label: {
-                        Text("Spacing \(nf.string(from: .init(value: itemSpacing))!)")
-                    }
-                }
-
-                HStack(spacing: 20) {
-                    Button {
-                        withAnimation { showingElementsAffected = true }
-                    } label: {
-                        Text("Elements affected \(elementsAffected)")
-                    }
-                }
-
-                Divider()
-
-                HStack {
-                    Button {
-                        showingSaveParamsAlert = true
-                    } label: {
-                        Text("Save")
-                    }
-
-                    Divider()
-                        .frame(height: 12)
-
-                    Button {
-                        showingLoadParams = true
-                    } label: {
-                        Text("Load")
-                    }
-                }
-            }.font(.caption2)
-
-            if showingAnimUp {
-                ClosableContainer(content: DoubleTweakerView(value: $animUp, range: 0...2.0, title: "Animation Up"), showing: $showingAnimUp)
             }
-            if showingAnimDown {
-                ClosableContainer(content: DoubleTweakerView(value: $animDown, range: 0...2.0, title: "Animation Down"), showing: $showingAnimDown)
-            }
-            if showingRows {
-                ClosableContainer(content: DoubleTweakerView(value: $rows, range: 2...40, title: "Rows"), showing: $showingRows)
-            }
-            if showingCols {
-                ClosableContainer(content: DoubleTweakerView(value: $cols, range: 2...40, title: "Cols"), showing: $showingCols)
-            }
-
-            if showingCellSide {
-                ClosableContainer(content: DoubleTweakerView(value: $side, range: 2.0...100.0, title: "Side"), showing: $showingCellSide)
-            }
-
-            if showingCellSpacing {
-                ClosableContainer(content: DoubleTweakerView(value: $itemSpacing, range: 1.0...20.0, title: "Spacing"), showing: $showingCellSpacing)
-            }
-
-            if showingSaveParamsAlert {
-                ClosableContainer(content: saveSheet, showing: $showingSaveParamsAlert)
-            }
-
-            if showingElementsAffected {
-                ClosableContainer(content: DoubleTweakerView(
-                    value: $elementsAffected,
-                    range: 2...20,
-                    title: "Elements affected"
-                ), showing: $showingElementsAffected)
+            .frame(height: 190, alignment: .center)
+            .sheet(isPresented: $showingLoadParams) {
+                loadSheet
             }
         }
-        .frame(height: 190, alignment: .center)
-        .sheet(isPresented: $showingLoadParams) {
-            loadSheet
-        }
+    }
+
+    private var params: [DoubleParam] {
+        [
+            .init(param: $itemSpacing, range: 1.0...(20.0), name: "Cell Spacing"),
+            .init(param: $animUp, range: 0.0...(2.0), name: "Animation Up"),
+            .init(param: $animDown, range: 0.0...(2.0), name: "Animation Down"),
+            .init(param: $rows, range: 0...(200), name: "Rows"),
+            .init(param: $cols, range: 0...(200), name: "Columns"),
+            .init(param: $side, range: 0...(200), name: "Cell Size"),
+            .init(param: $elementsAffected, range: 0...(200), name: "Spread"),
+        ]
     }
 
     var body: some View {
@@ -409,7 +336,9 @@ struct ClothView: View {
         }
         .overlay(
             VStack {
-                tweaksView.fixedSize()
+                ParamsView(doubles: params)
+
+                saveLoad
             }.frame(maxHeight: .infinity, alignment: .bottom)
         )
         .onReceive(timer) { _ in
@@ -454,14 +383,30 @@ struct ClosableContainer<Content: View>: View {
     }
 }
 
+struct TweakerView: View {
+    @Binding var param: DoubleParam
+    var body: some View {
+        VStack {
+            Slider(value: $param.param, in: param.range, step: 0.1)
+                .frame(width: 220)
+            Text("\(param.name): \(nf.string(from: .init(value: param.param)) ?? "")")
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(.thinMaterial)
+        )
+    }
+}
+
 struct DoubleTweakerView: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
     let title: String
     init(
-    value: Binding<Double>,
-    range: ClosedRange<Double>,
-    title: String
+        value: Binding<Double>,
+        range: ClosedRange<Double>,
+        title: String
     ) {
         self._value = value
         self.range = range
@@ -469,9 +414,9 @@ struct DoubleTweakerView: View {
     }
 
     init(
-    value: Binding<Int>,
-    range: ClosedRange<Int>,
-    title: String
+        value: Binding<Int>,
+        range: ClosedRange<Int>,
+        title: String
     ) {
         self._value = .init(get: {
             Double(value.wrappedValue)
@@ -487,6 +432,7 @@ struct DoubleTweakerView: View {
             Slider(value: $value, in: range, step: 0.1)
                 .frame(width: 220)
             Text("\(title): \(nf.string(from: .init(value: value)) ?? "")")
+                .font(.caption2)
         }
         .padding()
         .background(
@@ -499,6 +445,6 @@ struct DoubleTweakerView: View {
 struct ClothView_Previews: PreviewProvider {
     @State static var value = 0.4
     static var previews: some View {
-            ClothView()
+        ClothView()
     }
 }
