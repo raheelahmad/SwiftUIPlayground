@@ -35,6 +35,26 @@ protocol ViewConfig {
 }
 
 
+
+struct Col: Hashable, Equatable, Codable {
+    var r: Double
+    var g: Double
+    var b: Double
+
+    init(col: Color) {
+        r = Double(col.cgColor?.components?[0] ?? 0)
+        g = Double(col.cgColor?.components?[1] ?? 0)
+        b = Double(col.cgColor?.components?[2] ?? 0)
+    }
+
+    var color: Color {
+        Color(red: r, green: g, blue: b)
+    }
+}
+struct Cols: Hashable, Equatable, Codable {
+    var a: Col
+    var b: Col
+}
 struct ClothView: View {
     struct Params: Identifiable, Hashable, Equatable, Codable {
         var id: String { name }
@@ -44,9 +64,10 @@ struct ClothView: View {
         var side: Double
         var elementsAffected: Int
         var itemSpacing: Double
+        var colors: Cols
 
         static var byDefault: Self {
-            .init(name: "Default", rows: 12, cols: 15, side: 20, elementsAffected: 5, itemSpacing: 1.0)
+            .init(name: "Default", rows: 12, cols: 15, side: 20, elementsAffected: 5, itemSpacing: 1.0, colors: .init(a: Col(col: .red), b: .init(col: .yellow)))
         }
     }
 
@@ -56,6 +77,8 @@ struct ClothView: View {
         side = params.side
         itemSpacing = params.itemSpacing
         elementsAffected = params.elementsAffected
+        colA = params.colors.a.color
+        colB = params.colors.b.color
 
         let data = (UserDefaults.standard.value(forKey: Self.previousParamsKey) as? Data)
         let previousParams = (try? data.flatMap {
@@ -70,6 +93,8 @@ struct ClothView: View {
         case timerWave = "Timer Wave"
         case touchCloth = "Touch Cloth"
     }
+    @State private var colA: Color
+    @State private var colB: Color
     @State private var side: Double = 20 {
         didSet { newCalculateFrames() }
     }
@@ -111,7 +136,7 @@ struct ClothView: View {
     @State private var center: RowCol?
 
     typealias Opacity = Double
-    @State private var itemMods: [(CGRect, Opacity)]?
+    @State private var itemProps: [(CGRect, Opacity)]?
 
     let timer = Timer.publish(every: 0.3, on: .main, in: .common).autoconnect()
 
@@ -130,7 +155,7 @@ struct ClothView: View {
                 let sizeScale: Double
                 let move: CGPoint
                 let opacity: Opacity
-                if let tapped {
+                if let tapped = tapped {
 
                     let dist = self.distance(rectCenter, tapped)
                     let xDist: Double = (tapped.x - rectCenter.x)
@@ -155,7 +180,7 @@ struct ClothView: View {
             }
         }
 
-        self.itemMods = rects
+        self.itemProps = rects
     }
 
     private func rect(_ row: Int, _ col: Int) -> CGRect {
@@ -163,7 +188,7 @@ struct ClothView: View {
     }
 
     private func mod(_ row: Int, _ col: Int) -> (CGRect, Double)? {
-        guard let mods = itemMods else {
+        guard let mods = itemProps else {
             return nil
         }
 
@@ -201,7 +226,6 @@ struct ClothView: View {
             }
         }
         .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
-        .drawingGroup()
     }
 
     private var dragGesture: some Gesture {
@@ -222,7 +246,7 @@ struct ClothView: View {
     }
 
     private var content: some View {
-        LinearGradient(colors: [.blue, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(colors: [colA, colB], startPoint: .topLeading, endPoint: .bottomTrailing)
             .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
             .mask(grid)
             .gesture(dragGesture)
@@ -235,8 +259,10 @@ struct ClothView: View {
             .onPreferenceChange(SizeKey.self) {
                 self.totalSize = $0.first!.size
             }
+            .drawingGroup()
     }
 
+    @State private var showingParams = true
     @State private var showingSaveParamsAlert = false
     @State private var showingLoadParams = false
     @State private var saveParamsName: String = ""
@@ -259,6 +285,8 @@ struct ClothView: View {
                     cols = param.cols
                     side = param.side
                     itemSpacing = param.itemSpacing
+                    colA = param.colors.a.color
+                    colB = param.colors.b.color
                     showingLoadParams = false
                 }
         }
@@ -272,7 +300,15 @@ struct ClothView: View {
             Button {
                 if !saveParamsName.isEmpty {
                     previousParams.append(
-                        .init(name: saveParamsName, rows: rows, cols: cols, side: side, elementsAffected: elementsAffected, itemSpacing: itemSpacing)
+                        .init(
+                            name: saveParamsName,
+                            rows: rows,
+                            cols: cols,
+                            side: side,
+                            elementsAffected: elementsAffected,
+                            itemSpacing: itemSpacing,
+                            colors: .init(a: .init(col: colA), b: .init(col: colB))
+                        )
                     )
                     showingSaveParamsAlert = false
                 }
@@ -284,33 +320,38 @@ struct ClothView: View {
         }
     }
 
-    private var saveLoad: some View {
+    private var paramsControl: some View {
         ZStack {
-            VStack(spacing: 20) {
+            VStack(spacing: 10) {
                 HStack(spacing: 20) {
-                    HStack {
-                        Button {
-                            showingSaveParamsAlert = true
-                        } label: {
-                            Text("Save")
+                    Button {
+                        withAnimation {
+                            showingParams.toggle()
                         }
+                    } label: { Text(showingParams ? "Hide" : "Show") }
+                        .font(.callout.smallCaps())
+                        .animation(nil, value: showingParams)
 
-                        Divider()
-                            .frame(height: 12)
+                    Spacer()
 
-                        Button {
-                            showingLoadParams = true
-                        } label: {
-                            Text("Load")
-                        }
+                    Button {
+                        showingSaveParamsAlert = true
+                    } label: { Text("Save") }
+
+                    Divider()
+                        .frame(height: 22)
+
+                    Button {
+                        showingLoadParams = true
+                    } label: {
+                        Text("Load")
                     }
-                }.font(.caption2)
+                }.font(.callout.bold())
 
                 if showingSaveParamsAlert {
                     ClosableContainer(content: saveSheet, showing: $showingSaveParamsAlert)
                 }
             }
-            .frame(height: 190, alignment: .center)
             .sheet(isPresented: $showingLoadParams) {
                 loadSheet
             }
@@ -329,26 +370,53 @@ struct ClothView: View {
         ]
     }
 
-    var body: some View {
-        VStack {
-            content
-            Spacer()
-        }
-        .overlay(
-            VStack {
-                ParamsView(doubles: params)
+    private var colorParams: [ColorParam] {
+        [
+            .init(color: $colA, name: "Color A"),
+            .init(color: $colB, name: "Color B"),
+        ]
+    }
 
-                saveLoad
-            }.frame(maxHeight: .infinity, alignment: .bottom)
-        )
-        .onReceive(timer) { _ in
-            guard kind == .timerWave else { return }
-            let row = (center?.row ?? 0) + 1
-            let col = (center?.col ?? 0) + 1
-            withAnimation {
-                center = .init(row: row % rows, col: col % cols)
+    private var paramsView: some View {
+        VStack {
+            if showingParams {
+                ParamsView(doubles: params, colors: colorParams)
             }
+
+            paramsControl
+
+            Text("Params")
+                .font(.caption.monospaced())
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(.thinMaterial)
+        )
+        .padding(.horizontal)
+        .frame(maxHeight: .infinity, alignment: .bottom)
+
+    }
+
+    var body: some View {
+        Color.clear
+            .overlay(
+                VStack {
+                    content
+                    Spacer()
+                }
+            )
+            .overlay(paramsView)
+            .onReceive(timer) { _ in
+                guard kind == .timerWave else { return }
+                let row = (center?.row ?? 0) + 1
+                let col = (center?.col ?? 0) + 1
+                withAnimation {
+                    center = .init(row: row % rows, col: col % cols)
+                }
+            }
     }
 }
 
@@ -390,49 +458,6 @@ struct TweakerView: View {
             Slider(value: $param.param, in: param.range, step: 0.1)
                 .frame(width: 220)
             Text("\(param.name): \(nf.string(from: .init(value: param.param)) ?? "")")
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(.thinMaterial)
-        )
-    }
-}
-
-struct DoubleTweakerView: View {
-    @Binding var value: Double
-    let range: ClosedRange<Double>
-    let title: String
-    init(
-        value: Binding<Double>,
-        range: ClosedRange<Double>,
-        title: String
-    ) {
-        self._value = value
-        self.range = range
-        self.title = title
-    }
-
-    init(
-        value: Binding<Int>,
-        range: ClosedRange<Int>,
-        title: String
-    ) {
-        self._value = .init(get: {
-            Double(value.wrappedValue)
-        }, set: {
-            value.wrappedValue = Int($0)
-        })
-        self.range = .init(uncheckedBounds: (Double(range.lowerBound), Double(range.upperBound)))
-        self.title = title
-    }
-
-    var body: some View {
-        VStack {
-            Slider(value: $value, in: range, step: 0.1)
-                .frame(width: 220)
-            Text("\(title): \(nf.string(from: .init(value: value)) ?? "")")
-                .font(.caption2)
         }
         .padding()
         .background(

@@ -15,6 +15,7 @@
 		597450B128677AE4001C6B23 /* LayoutProtocolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597450B028677AE4001C6B23 /* LayoutProtocolView.swift */; };
 		597A2C22281125CF008ED2AF /* AdvancedAlignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597A2C21281125CF008ED2AF /* AdvancedAlignmentView.swift */; };
 		59AC921127DAD844006B0A93 /* TransitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AC921027DAD844006B0A93 /* TransitionsView.swift */; };
+		59BA8C1A28A38EAC006D1EBC /* DoubleTweaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BA8C1928A38EAC006D1EBC /* DoubleTweaker.swift */; };
 		59C16C732728C05600DF2A3A /* SwiftUIPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */; };
 		59C16C752728C05600DF2A3A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C16C742728C05600DF2A3A /* ContentView.swift */; };
 		59C16C772728C05800DF2A3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59C16C762728C05800DF2A3A /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 		597450B028677AE4001C6B23 /* LayoutProtocolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutProtocolView.swift; sourceTree = "<group>"; };
 		597A2C21281125CF008ED2AF /* AdvancedAlignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedAlignmentView.swift; sourceTree = "<group>"; };
 		59AC921027DAD844006B0A93 /* TransitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionsView.swift; sourceTree = "<group>"; };
+		59BA8C1928A38EAC006D1EBC /* DoubleTweaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTweaker.swift; sourceTree = "<group>"; };
 		59C16C6F2728C05600DF2A3A /* SwiftUIPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59C16C722728C05600DF2A3A /* SwiftUIPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlaygroundApp.swift; sourceTree = "<group>"; };
 		59C16C742728C05600DF2A3A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				59C16C762728C05800DF2A3A /* Assets.xcassets */,
 				59C16C782728C05800DF2A3A /* Preview Content */,
 				59F3CA95288DB42A00C1C97A /* ClothView.swift */,
+				59BA8C1928A38EAC006D1EBC /* DoubleTweaker.swift */,
 				59089C1B28A1B954003A91B1 /* ParamsView.swift */,
 			);
 			path = SwiftUIPlayground;
@@ -194,6 +197,7 @@
 				59F442F627E1C8060087FD22 /* GesturesAnimations1.swift in Sources */,
 				5950F19227DFCA57001EC6B9 /* FlowLayoutRevisitedView.swift in Sources */,
 				596C29F5282A091F002648CA /* FlipAndSlideView.swift in Sources */,
+				59BA8C1A28A38EAC006D1EBC /* DoubleTweaker.swift in Sources */,
 				59C16C732728C05600DF2A3A /* SwiftUIPlaygroundApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,65 +7,78 @@
 
 import SwiftUI
 
-struct DoubleParam: Identifiable {
-    @Binding var param: Double
-    let range: ClosedRange<Double>
-    let name: String
-
-    var id: String { name }
-    init(param: Binding<Double>, range: ClosedRange<Double>, name: String) {
-        self._param = param
-        self.name = name
-        self.range = range
-    }
-
-    init(param: Binding<Int>, range: ClosedRange<Int>, name: String) {
-        self._param = .init(get: {
-            Double(param.wrappedValue)
-        }, set: {
-            param.wrappedValue = Int($0)
-        })
-        self.range = Double(range.lowerBound)...Double(range.upperBound)
-        self.name = name
-    }
-}
-
 struct ParamsView: View {
     var doubles: [DoubleParam]
+    var colors: [ColorParam]
+    let leadingIndices: Range<Int>
+    let trailingIndices: Range<Int>
     @State var showingDoubles: [Bool]
+    @State var showingColors: [Bool]
 
-    init(doubles: [DoubleParam]) {
+    init(doubles: [DoubleParam], colors: [ColorParam] = []) {
         self.doubles = doubles
+        self.colors = colors
         self.showingDoubles = .init(repeating: false, count: doubles.count)
+        self.showingColors = .init(repeating: false, count: colors.count)
+        let middle = self.doubles.count/2 + 1
+        self.leadingIndices = 0..<middle
+        self.trailingIndices = middle..<doubles.count
+    }
+
+    func column(_ indices: Range<Int>) -> some View {
+        VStack {
+            ForEach(indices, id: \.self) { index in
+                Button {
+                    withAnimation { showingDoubles[index] = true }
+                } label: {
+                    HStack {
+                        Text(doubles[index].name)
+                            .font(.caption)
+                        Spacer()
+                            .overlay(
+                                VStack {
+                                    Spacer()
+                                    Rectangle().frame(height: 0.5)
+                                }
+                                    .opacity(0.8)
+                                    .padding(.horizontal, 4)
+                            )
+                        Text(
+                            nf.string(from: .init(value: doubles[index].param))!
+                        )
+                    }
+                }
+            }
+        }
     }
 
     var body: some View {
         ZStack {
-            VStack {
-                ForEach(doubles.indices, id: \.self) { index in
-                    Button {
-                        withAnimation { showingDoubles[index] = true }
-                    } label: {
-                        HStack {
-                            Text(doubles[index].name)
-                                .font(.caption)
-                            Spacer()
-                                .overlay(
-                                    VStack {
-                                        Spacer()
-                                        Rectangle().frame(height: 0.5)
-                                    }
-                                        .opacity(0.8)
-                                        .padding(.horizontal, 4)
-                                )
-                            Text(
-                                nf.string(from: .init(value: doubles[index].param))!
-                            )
-                        }
-                    }.frame(maxWidth: 190)
+            VStack(spacing: 8) {
+                HStack(alignment: .top, spacing: 12) {
+                    column(leadingIndices)
+                    column(trailingIndices)
                 }
-            }
 
+                ForEach(colors.indices, id: \.self) { idx in
+                    HStack {
+                        Text(colors[idx].name)
+                            .font(.caption)
+                        Spacer()
+                            .overlay(
+                                VStack {
+                                    Spacer()
+                                    Rectangle().frame(height: 0.5)
+                                }
+                                    .opacity(0.8)
+                                    .padding(.horizontal, 4)
+                            )
+                        
+                        ColorPicker(colors[idx].name, selection: colors[idx].$color)
+                    }
+                }
+
+            }.frame(minHeight: 180)
 
             ForEach(doubles.indices, id: \.self) { index in
                 if showingDoubles[index] {
@@ -76,6 +89,16 @@ struct ParamsView: View {
                             title: doubles[index].name
                         ),
                         showing: $showingDoubles[index]
+                    )
+                }
+            }
+
+
+            ForEach(colors.indices, id: \.self) { index in
+                if showingColors[index] {
+                    ClosableContainer(
+                        content: ColorPicker(colors[index].name, selection: colors[index].$color),
+                        showing: $showingColors[index]
                     )
                 }
             }
