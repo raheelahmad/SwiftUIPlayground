@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+struct Col: Hashable, Equatable, Codable {
+    var r: Double
+    var g: Double
+    var b: Double
+
+    init(col: Color) {
+        let uiCol = UIColor(col)
+        let comps = uiCol.cgColor.components!
+        r = Double(comps[0])
+        g = Double(comps[1])
+        b = Double(comps[2])
+    }
+
+    var color: Color {
+        Color(red: r, green: g, blue: b)
+    }
+}
+
+struct Cols: Hashable, Equatable, Codable {
+    var topLeading: Col
+    var bottomTrailing: Col
+}
+
 struct ParamsView: View {
     var doubles: [DoubleParam]
     var colors: [ColorParam]
@@ -64,6 +87,7 @@ struct ParamsView: View {
                     HStack {
                         Text(colors[idx].name)
                             .font(.caption)
+                            .foregroundColor(.blue)
                         Spacer()
                             .overlay(
                                 VStack {
@@ -73,8 +97,9 @@ struct ParamsView: View {
                                     .opacity(0.8)
                                     .padding(.horizontal, 4)
                             )
-                        
-                        ColorPicker(colors[idx].name, selection: colors[idx].$color)
+
+                        ColorPicker("", selection: colors[idx].$color)
+                            .fixedSize()
                     }
                 }
 

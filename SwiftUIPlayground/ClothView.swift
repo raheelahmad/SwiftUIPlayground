@@ -6,55 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
-struct RowCol: Equatable {
-    let row: Int
-    let col: Int
-}
+final class ClothViewModel: ObservableObject {
+    let dragged = PassthroughSubject<Void, Never>()
 
-let nf: NumberFormatter = {
-    let fn = NumberFormatter()
-    fn.maximumFractionDigits = 1
-    return fn
-}()
+    private var subscriptions: [AnyCancellable] = []
 
-
-extension Double {
-    func lerp(_ min: Double, _ max: Double, _ from: Double, _ to: Double) -> Double {
-        guard self > min else { return from }
-        guard self < max else { return to }
-        guard max > min else { return (min + max)/2 }
-        let ratio = (self - min) / (max - min)
-        let result = from * (1 - ratio) + to * ratio
-        return result
+    init() {
+        dragged
+            .collect(.byTime(RunLoop.main, .milliseconds(100)))
+            .sink { _ in
+                UIImpactFeedbackGenerator().impactOccurred(intensity: 0.5)
+            }.store(in: &subscriptions)
     }
 }
 
-protocol ViewConfig {
-    static var `default`: Self { get }
-}
-
-
-
-struct Col: Hashable, Equatable, Codable {
-    var r: Double
-    var g: Double
-    var b: Double
-
-    init(col: Color) {
-        r = Double(col.cgColor?.components?[0] ?? 0)
-        g = Double(col.cgColor?.components?[1] ?? 0)
-        b = Double(col.cgColor?.components?[2] ?? 0)
-    }
-
-    var color: Color {
-        Color(red: r, green: g, blue: b)
-    }
-}
-struct Cols: Hashable, Equatable, Codable {
-    var a: Col
-    var b: Col
-}
 struct ClothView: View {
     struct Params: Identifiable, Hashable, Equatable, Codable {
         var id: String { name }
@@ -67,7 +34,12 @@ struct ClothView: View {
         var colors: Cols
 
         static var byDefault: Self {
-            .init(name: "Default", rows: 12, cols: 15, side: 20, elementsAffected: 5, itemSpacing: 1.0, colors: .init(a: Col(col: .red), b: .init(col: .yellow)))
+            .init(
+                name: "Default",
+                rows: 42, cols: 20, side: 19,
+                elementsAffected: 7, itemSpacing: 3.2,
+                colors: .init(topLeading: Col(col: Color.blue), bottomTrailing: .init(col: Color.orange))
+            )
         }
     }
 
@@ -77,8 +49,8 @@ struct ClothView: View {
         side = params.side
         itemSpacing = params.itemSpacing
         elementsAffected = params.elementsAffected
-        colA = params.colors.a.color
-        colB = params.colors.b.color
+        topLeadingColor = params.colors.topLeading.color
+        bottomTrailingColor = params.colors.bottomTrailing.color
 
         let data = (UserDefaults.standard.value(forKey: Self.previousParamsKey) as? Data)
         let previousParams = (try? data.flatMap {
@@ -93,8 +65,10 @@ struct ClothView: View {
         case timerWave = "Timer Wave"
         case touchCloth = "Touch Cloth"
     }
-    @State private var colA: Color
-    @State private var colB: Color
+
+    @StateObject private var viewModel = ClothViewModel()
+    @State private var topLeadingColor: Color
+    @State private var bottomTrailingColor: Color
     @State private var side: Double = 20 {
         didSet { newCalculateFrames() }
     }
@@ -110,7 +84,9 @@ struct ClothView: View {
     }
 
     @State private var itemSpacing = 1.0 {
-        didSet { newCalculateFrames() }
+        didSet {
+            newCalculateFrames()
+        }
     }
 
     @State private var elementsAffected = 1 {
@@ -142,7 +118,7 @@ struct ClothView: View {
 
     private func newCalculateFrames() {
         let rectSide = side - itemSpacing
-        var rects: [(CGRect, Double)] = []
+        var itemProps: [(CGRect, Double)] = []
         let minOpacity = 0.25
         let maxOpacity = 0.95
         let maxDistance = Double(elementsAffected) * rectSide
@@ -162,7 +138,7 @@ struct ClothView: View {
                     let yDist: Double = (tapped.y - rectCenter.y)
                     let scale = dist.lerp(0, maxDistance, 0, 1)
 
-                    sizeScale = scale.lerp(0, 1, 0.1, 1)
+                    sizeScale = scale.lerp(0, 1, 0.4, 1)
                     opacity = scale.lerp(0, 1, minOpacity, maxOpacity)
 
                     move = .init(
@@ -176,11 +152,11 @@ struct ClothView: View {
                 }
 
                 let rect = CGRect(x: x + move.x, y: y + move.y, width: rectSide * sizeScale, height: rectSide * sizeScale)
-                rects.append((rect, opacity))
+                itemProps.append((rect, opacity))
             }
         }
 
-        self.itemProps = rects
+        self.itemProps = itemProps
     }
 
     private func rect(_ row: Int, _ col: Int) -> CGRect {
@@ -236,6 +212,7 @@ struct ClothView: View {
                 withAnimation(.easeInOut(duration: animDown)) {
                     self.tapped = loc
                 }
+                self.viewModel.dragged.send()
             }
             .onEnded { _ in
                 guard kind == .touchCloth else { return }
@@ -246,7 +223,7 @@ struct ClothView: View {
     }
 
     private var content: some View {
-        LinearGradient(colors: [colA, colB], startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(colors: [topLeadingColor, bottomTrailingColor], startPoint: .topLeading, endPoint: .bottomTrailing)
             .frame(width: gridSize.width, height: gridSize.height, alignment: .topLeading)
             .mask(grid)
             .gesture(dragGesture)
@@ -258,6 +235,9 @@ struct ClothView: View {
             )
             .onPreferenceChange(SizeKey.self) {
                 self.totalSize = $0.first!.size
+            }
+            .onChange(of: [itemSpacing, ]) { _ in
+                newCalculateFrames()
             }
             .drawingGroup()
     }
@@ -285,8 +265,8 @@ struct ClothView: View {
                     cols = param.cols
                     side = param.side
                     itemSpacing = param.itemSpacing
-                    colA = param.colors.a.color
-                    colB = param.colors.b.color
+                    topLeadingColor = param.colors.topLeading.color
+                    bottomTrailingColor = param.colors.bottomTrailing.color
                     showingLoadParams = false
                 }
         }
@@ -307,7 +287,7 @@ struct ClothView: View {
                             side: side,
                             elementsAffected: elementsAffected,
                             itemSpacing: itemSpacing,
-                            colors: .init(a: .init(col: colA), b: .init(col: colB))
+                            colors: .init(topLeading: .init(col: topLeadingColor), bottomTrailing: .init(col: bottomTrailingColor))
                         )
                     )
                     showingSaveParamsAlert = false
@@ -360,20 +340,20 @@ struct ClothView: View {
 
     private var params: [DoubleParam] {
         [
+            .init(param: $rows, range: 0...(120), name: "Rows"),
+            .init(param: $cols, range: 0...(90), name: "Columns"),
             .init(param: $itemSpacing, range: 1.0...(20.0), name: "Cell Spacing"),
+            .init(param: $side, range: 0...(50), name: "Cell Size"),
             .init(param: $animUp, range: 0.0...(2.0), name: "Animation Up"),
             .init(param: $animDown, range: 0.0...(2.0), name: "Animation Down"),
-            .init(param: $rows, range: 0...(200), name: "Rows"),
-            .init(param: $cols, range: 0...(200), name: "Columns"),
-            .init(param: $side, range: 0...(200), name: "Cell Size"),
-            .init(param: $elementsAffected, range: 0...(200), name: "Spread"),
+            .init(param: $elementsAffected, range: 0...(30), name: "Spread"),
         ]
     }
 
     private var colorParams: [ColorParam] {
         [
-            .init(color: $colA, name: "Color A"),
-            .init(color: $colB, name: "Color B"),
+            .init(color: $topLeadingColor, name: "Color A"),
+            .init(color: $bottomTrailingColor, name: "Color B"),
         ]
     }
 
@@ -473,3 +453,30 @@ struct ClothView_Previews: PreviewProvider {
         ClothView()
     }
 }
+
+// ---
+
+
+struct RowCol: Equatable {
+    let row: Int
+    let col: Int
+}
+
+let nf: NumberFormatter = {
+    let fn = NumberFormatter()
+    fn.maximumFractionDigits = 1
+    return fn
+}()
+
+extension Double {
+    func lerp(_ min: Double, _ max: Double, _ from: Double, _ to: Double) -> Double {
+        guard self > min else { return from }
+        guard self < max else { return to }
+        guard max > min else { return (min + max)/2 }
+        let ratio = (self - min) / (max - min)
+        let result = from * (1 - ratio) + to * ratio
+        return result
+    }
+}
+
+
